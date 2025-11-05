@@ -3,177 +3,214 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Personalised Gifts Studio – Camelia Simion</title>
-  <meta name="description" content="Responsive demo about a personalised gifts studio: hero, cards, grids, embeds, CSS filters, and an HTML table." />
-
+  <title>Iris93 Personalised Gifts – Camelia Simion</title>
+  <meta name="description" content="Responsive Iris93 one-pager with hero, cards, grids, embeds, CSS filters, and an HTML table." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --bg:#0c0f14;
-      --bg-soft:#121722;
-      --text:#f1f5fb;
-      --muted:#93a3ba;
-      --accent:#ff9cc8;    /* soft rose */
-      --accent-2:#7ae0ff;  /* sky */
-      --card:#121a29;
-      --ring:#26344d;
-      --radius:16px;
-      --shadow:0 12px 30px rgba(0,0,0,.28);
-      --maxw:1100px;
+      /* Brand palette (adjust to taste) */
+      --bg:#0b0f16;        /* page background (dark) */
+      --bg2:#10172a;       /* soft gradient end */
+      --text:#f4f7fb;      /* primary text */
+      --muted:#9fb0c6;     /* secondary text */
+      --ring:#25344f;      /* borders/lines */
+      --card:#0f1726;      /* surfaces/cards */
+      --brand:#ff9cc8;     /* rose */
+      --brand2:#7ae0ff;    /* sky */
+      --accent:#b8a4ff;    /* lilac */
+      --radius:18px;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --maxw:1160px;
     }
     @media (prefers-color-scheme: light){
-      :root{--bg:#ffffff;--bg-soft:#f6f8fc;--text:#0c0f14;--muted:#50627b;--card:#ffffff;--ring:#dfe7f5;--shadow:0 12px 30px rgba(12,18,32,.08)}
+      :root{
+        --bg:#ffffff; --bg2:#f7f9fe; --text:#0b0f16; --muted:#566a86;
+        --ring:#dde6f4; --card:#ffffff; --shadow:0 18px 40px rgba(12,18,32,.10)
+      }
     }
 
     *{box-sizing:border-box}
     html,body{margin:0}
     body{
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
       background:
-        radial-gradient(1200px 800px at 100% -150px, rgba(255,156,200,.25) 0%, rgba(255,156,200,0) 60%),
-        radial-gradient(1100px 700px at -10% -150px, rgba(122,224,255,.18) 0%, rgba(122,224,255,0) 60%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
-      color:var(--text); line-height:1.6;
+        radial-gradient(1200px 800px at 110% -120px, rgba(255,156,200,.24) 0%, rgba(255,156,200,0) 60%),
+        radial-gradient(1000px 700px at -10% -120px, rgba(122,224,255,.18) 0%, rgba(122,224,255,0) 60%),
+        linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+      line-height:1.6;
     }
     .container{max-width:var(--maxw); margin:0 auto; padding:0 20px}
 
-    header{position:sticky; top:0; z-index:10; backdrop-filter:blur(8px);
-      background: color-mix(in oklab, var(--bg) 86%, transparent); border-bottom:1px solid var(--ring)}
-    .nav{display:flex; align-items:center; justify-content:space-between; min-height:64px}
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50; border-bottom:1px solid var(--ring);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      backdrop-filter: blur(10px);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; min-height:70px}
     .brand{font-weight:800; text-decoration:none; color:var(--text); letter-spacing:.2px}
-    .brand span{color:var(--accent)}
+    .brand-badge{
+      background:linear-gradient(90deg,var(--brand),var(--brand2));
+      -webkit-background-clip:text; background-clip:text; color:transparent
+    }
     .nav-links{display:flex; gap:14px}
-    .nav-links a{color:var(--muted); text-decoration:none; padding:8px 10px; border-radius:10px}
+    .nav-links a{color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:12px}
     .nav-links a:hover{background:var(--ring); color:var(--text)}
     .btn{
-      display:inline-flex; align-items:center; gap:8px; border:0;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      color:#0c0f14; font-weight:800; padding:12px 18px; border-radius:14px; box-shadow:var(--shadow);
-      text-decoration:none
+      display:inline-flex; align-items:center; gap:8px; border:0; cursor:pointer;
+      padding:12px 18px; border-radius:14px; font-weight:800; text-decoration:none;
+      color:#0b0f16; background:linear-gradient(90deg,var(--brand),var(--brand2));
+      box-shadow: var(--shadow); transform: translateZ(0); transition: transform .15s ease;
+    }
+    .btn:hover{ transform: translateY(-2px) }
+    .chip{
+      display:inline-block; font-weight:800; font-size:.78rem; letter-spacing:.3px;
+      padding:6px 10px; border-radius:999px; color:#0b0f16;
+      background:linear-gradient(90deg, color-mix(in oklab, var(--brand) 65%, white 35%), color-mix(in oklab, var(--brand2) 55%, white 45%));
     }
 
     /* Hero */
-    .hero{padding:72px 0 40px}
-    .hero-inner{display:grid; gap:24px; grid-template-columns: 1.15fr .85fr}
-    @media (max-width: 860px){ .hero-inner{grid-template-columns:1fr} }
-    .hero h1{margin:0 0 8px; font-size: clamp(2rem, 4.2vw + .5rem, 3.4rem); line-height:1.08}
-    .lead{color:var(--muted); font-size: clamp(1rem, .7vw + .8rem, 1.15rem)}
-    .hero-cta{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
-    .hero-card{background:var(--card); border:1px solid var(--ring); border-radius:var(--radius); padding:18px}
+    .hero{padding:84px 0 48px}
+    .hero-inner{display:grid; gap:26px; grid-template-columns: 1.2fr .8fr; align-items:center}
+    @media (max-width: 900px){ .hero-inner{grid-template-columns:1fr} }
+    h1{margin:0 0 10px; line-height:1.05; font-size: clamp(2rem, 4.2vw + .6rem, 3.6rem)}
+    .lead{color:var(--muted); font-size: clamp(1rem, .7vw + .85rem, 1.2rem)}
+    .hero-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:16px}
+    .glass{
+      background: color-mix(in oklab, var(--card) 72%, transparent);
+      border:1px solid var(--ring); border-radius: var(--radius); padding:20px;
+      box-shadow: var(--shadow);
+    }
+    .shine{ position:relative; overflow:hidden }
+    .shine:before{
+      content:""; position:absolute; inset:-1px; border-radius: inherit;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.25), transparent 30% 70%, rgba(255,255,255,.25)),
+        linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,0));
+      mask: linear-gradient(#000, transparent 40%);
+      pointer-events:none;
+    }
 
-    /* Generic grid */
+    /* Sections & grid */
+    section{padding:50px 0}
+    section h2{margin:0 0 10px; font-size: clamp(1.25rem, .9vw + 1rem, 1.9rem)}
+    section p.sub{margin:-3px 0 18px; color:var(--muted)}
     .grid{display:grid; gap:18px; grid-template-columns:repeat(12,1fr)}
 
     /* Cards */
     .card{
       grid-column: span 4; background:var(--card); border:1px solid var(--ring);
-      border-radius:var(--radius); padding:18px; transition:.2s transform,.2s box-shadow
+      border-radius:var(--radius); padding:18px; transition: transform .2s ease, box-shadow .2s ease;
+      transform: translateZ(0);
     }
-    .card:hover{transform: translateY(-4px); box-shadow:var(--shadow)}
+    .card:hover{ transform: translateY(-6px); box-shadow: var(--shadow) }
     .card h3{margin:0 0 8px}
     .card p{margin:0; color:var(--muted)}
     @media (max-width: 900px){ .card{grid-column: span 6} }
     @media (max-width: 600px){ .card{grid-column: span 12} }
 
-    /* Product preview with CSS filters */
+    /* CSS filter gallery */
     .filters{display:grid; gap:14px; grid-template-columns:repeat(6,1fr)}
     @media (max-width: 900px){ .filters{grid-template-columns:repeat(3,1fr)} }
     @media (max-width: 520px){ .filters{grid-template-columns:repeat(2,1fr)} }
-    .thumb{aspect-ratio:1/1; width:100%; border-radius:14px; overflow:hidden; border:1px solid var(--ring); background:#0003}
-    .thumb img{width:100%; height:100%; object-fit:cover; display:block}
-    .thumb.gray img{filter:grayscale(1) contrast(1.1)}
-    .thumb.blur img{filter:blur(1px) brightness(1.05)}
-    .thumb.hue img{filter:hue-rotate(12deg) saturate(1.25)}
-    .thumb.sepia img{filter:sepia(.55) contrast(1.1)}
-    .thumb.inv img{filter:invert(.06) saturate(1.4)}
+    .thumb{aspect-ratio:1/1; width:100%; border-radius:16px; overflow:hidden; border:1px solid var(--ring); background:#0003}
+    .thumb img{width:100%; height:100%; object-fit:cover; display:block; transform:scale(1); transition: transform .2s ease}
+    .thumb:hover img{ transform:scale(1.05) }
+    .gray img{filter:grayscale(1) contrast(1.1)}
+    .blur img{filter:blur(1px) brightness(1.05)}
+    .hue img{filter:hue-rotate(15deg) saturate(1.25)}
+    .sepia img{filter:sepia(.55) contrast(1.1)}
+    .inv img{filter:invert(.06) saturate(1.35)}
 
-    /* Embeds */
+    /* Embeds (YouTube + Facebook) */
     .embeds{display:grid; gap:18px; grid-template-columns:repeat(12,1fr)}
     .embed{grid-column: span 6; aspect-ratio:16/9; background:#000; border-radius:16px; overflow:hidden; border:1px solid var(--ring)}
     .embed iframe{width:100%; height:100%; border:0}
     @media (max-width: 900px){ .embed{grid-column: span 12} }
 
     /* Table */
-    .table-wrap{overflow:auto; border:1px solid var(--ring); border-radius:12px; background:var(--card)}
-    table{width:100%; border-collapse:collapse; min-width:640px}
+    .table-wrap{overflow:auto; border:1px solid var(--ring); border-radius:14px; background:var(--card)}
+    table{width:100%; border-collapse:collapse; min-width:680px}
     th,td{padding:12px 14px; text-align:left; border-bottom:1px solid var(--ring)}
-    thead th{background:var(--bg-soft); color:var(--muted); position:sticky; top:0}
-    tbody tr:hover{background: color-mix(in oklab, var(--bg-soft) 70%, transparent)}
-
-    /* Sections */
-    section{padding:46px 0}
-    section h2{margin:0 0 10px; font-size: clamp(1.25rem, .9vw + 1rem, 1.8rem)}
-    section p.sub{margin:-4px 0 18px; color:var(--muted)}
+    thead th{background: color-mix(in oklab, var(--card) 70%, white 30%); color:var(--muted); position:sticky; top:0}
+    tbody tr:hover{background: color-mix(in oklab, var(--bg2) 80%, transparent)}
+    .price .btn{padding:8px 12px; border-radius:12px; box-shadow:none}
 
     /* Footer */
-    footer{border-top:1px solid var(--ring); padding:30px 0; margin-top:38px; color:var(--muted)}
+    footer{border-top:1px solid var(--ring); padding:30px 0; margin-top:42px; color:var(--muted)}
     .links{display:flex; gap:14px; flex-wrap:wrap}
-    .links a{color:var(--accent-2); text-decoration:none}
+    .links a{color:var(--brand2); text-decoration:none}
     .links a:hover{text-decoration:underline}
 
+    /* A11y */
     .sr-only{position:absolute; inline-size:1px; block-size:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; clip-path:inset(50%)}
-    .badge{display:inline-block; background: color-mix(in oklab, var(--accent) 40%, var(--bg) 60%); color:#0c0f14; font-weight:800; padding:6px 10px; border-radius:999px}
   </style>
 </head>
 <body>
   <a class="sr-only" href="#main">Skip to content</a>
 
+  <!-- Facebook SDK (for Page plugin) -->
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
+
   <header>
     <div class="container nav">
-      <a class="brand" href="#"><span>Personalised</span> Gifts Studio</a>
+      <a class="brand" href="#"><span class="brand-badge">Iris93</span> Personalised Gifts</a>
       <nav class="nav-links" aria-label="Primary">
         <a href="#collections">Collections</a>
         <a href="#gallery">Filters</a>
         <a href="#embeds">Embeds</a>
-        <a href="#pricing">Table</a>
+        <a href="#pricing">Pricing</a>
         <a class="btn" href="#github">View Code</a>
       </nav>
     </div>
   </header>
 
   <main id="main">
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="hero">
       <div class="container hero-inner">
         <div>
-          <span class="badge">Handmade • Custom • Fast</span>
+          <span class="chip">Handmade • Custom • Fast</span>
           <h1>Make memories giftable.</h1>
           <p class="lead">
-            From bespoke mugs and engraved keepsakes to photo tees and wall art,
-            our studio turns your favourite moments into beautifully crafted gifts.
+            Bespoke mugs, photo tees, wall art & more—crafted just for you.
+            Clean, modern UI with gentle motion and shop-friendly ambience.
           </p>
           <div class="hero-cta">
             <a class="btn" href="#collections">Explore Collections</a>
-            <a class="btn" href="#embeds" style="background:linear-gradient(90deg,var(--accent-2),var(--accent))">Watch a Demo</a>
+            <a class="btn" href="#embeds" style="background:linear-gradient(90deg,var(--brand2),var(--accent))">See Our Feed</a>
           </div>
         </div>
-        <div class="hero-card" role="img" aria-label="Gift preview card">
-          <strong>What we personalise</strong>
-          <ul style="margin:10px 0 0; padding-left:18px; color:var(--muted)">
-            <li>Mugs, tumblers, water bottles</li>
-            <li>T-shirts & hoodies</li>
-            <li>Canvases & wall prints</li>
-            <li>Phone cases & accessories</li>
+        <div class="glass shine" role="img" aria-label="Why shop Iris93">
+          <strong style="display:block;margin-bottom:8px">Why Iris93</strong>
+          <ul style="margin:0; padding-left:18px; color:var(--muted)">
+            <li>Premium-quality prints & eco options</li>
+            <li>Fast turnaround & tracked delivery</li>
+            <li>Free design help on requests</li>
+            <li>Bulk & corporate packs available</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Collections (Cards / Grid) -->
+    <!-- COLLECTIONS (CARDS / GRID) -->
     <section id="collections">
       <div class="container">
         <h2>Popular Collections</h2>
-        <p class="sub">A responsive 12-column layout that adapts gracefully.</p>
+        <p class="sub">A responsive 12-column grid with smooth hover motion.</p>
 
         <div class="grid">
           <article class="card">
             <h3>Photo Mugs</h3>
-            <p>Dishwasher-safe ceramics with vibrant, long-lasting prints.</p>
+            <p>Vivid, dishwasher-safe ceramics with wrap-around prints.</p>
           </article>
           <article class="card">
             <h3>Custom Apparel</h3>
-            <p>Ultra-soft tees & hoodies—DTG prints or premium embroidery.</p>
+            <p>Ultra-soft tees & hoodies—DTG or embroidery available.</p>
           </article>
           <article class="card">
             <h3>Wall Art</h3>
@@ -181,11 +218,11 @@
           </article>
           <article class="card">
             <h3>Wedding Gifts</h3>
-            <p>Elegant keepsakes for bridesmaids, groomsmen, and family.</p>
+            <p>Elegant keepsakes for bridesmaids, groomsmen & family.</p>
           </article>
           <article class="card">
             <h3>Kids & Baby</h3>
-            <p>Adorable onesies, name prints, and birthday party favours.</p>
+            <p>Adorable onesies, name prints, and birthday favours.</p>
           </article>
           <article class="card">
             <h3>Corporate</h3>
@@ -195,50 +232,61 @@
       </div>
     </section>
 
-    <!-- CSS Filters Gallery -->
+    <!-- CSS FILTERS GALLERY -->
     <section id="gallery">
       <div class="container">
         <h2>Design Looks (CSS Filters)</h2>
         <p class="sub">Quick visual styles you can apply to images in the browser.</p>
         <div class="filters">
-          <div class="thumb gray"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="Gift box grayscale"></div>
-          <div class="thumb blur"><img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop" alt="Wrapping paper blur"></div>
-          <div class="thumb hue"><img src="https://images.unsplash.com/photo-1517249361621-f11084eb8ccb?q=80&w=1200&auto=format&fit=crop" alt="Custom mug hue"></div>
+          <div class="thumb gray"><img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop" alt="T-shirts grayscale"></div>
+          <div class="thumb blur"><img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop" alt="Wrapping blur"></div>
+          <div class="thumb hue"><img src="https://images.unsplash.com/photo-1517249361621-f11084eb8ccb?q=80&w=1200&auto=format&fit=crop" alt="Mug hue"></div>
           <div class="thumb sepia"><img src="https://images.unsplash.com/photo-1520975682031-a7c65c0c57cb?q=80&w=1200&auto=format&fit=crop" alt="Cards sepia"></div>
           <div class="thumb inv"><img src="https://images.unsplash.com/photo-1520975708797-3fd2d6e30c6f?q=80&w=1200&auto=format&fit=crop" alt="Printer invert"></div>
-          <div class="thumb"><img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop" alt="T-shirts default"></div>
+          <div class="thumb"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1200&auto=format&fit=crop" alt="Gift box default"></div>
         </div>
       </div>
     </section>
 
-    <!-- Embeds -->
+    <!-- EMBEDS (YouTube + Facebook Page) -->
     <section id="embeds">
       <div class="container">
         <h2>Studio Embeds</h2>
-        <p class="sub">A short promo video and our shop map—both responsive.</p>
+        <p class="sub">A calm lo-fi ambience for the shop and your Facebook page timeline.</p>
+
         <div class="embeds">
-          <div class="embed" aria-label="YouTube promo">
+          <!-- YouTube: calm coffee-shop / lo-fi ambience (great for Iris93 vibe) -->
+          <div class="embed" aria-label="YouTube ambience">
             <iframe
-              src="https://www.youtube.com/embed/2Vv-BfVoq4g"
-              title="Studio promo"
+              src="https://www.youtube.com/embed/5qap5aO4i9A"
+              title="Lo-fi hip hop radio – beats to relax/study to"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen></iframe>
           </div>
-          <div class="embed" aria-label="Map">
-            <iframe
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.754%2C51.807%2C-0.737%2C51.816&layer=mapnik"
-              title="Studio map"></iframe>
+
+          <!-- Facebook Page plugin: Iris93 page -->
+          <div class="embed" aria-label="Facebook Page">
+            <div class="fb-page"
+              data-href="https://www.facebook.com/profile.php?id=100077254045255"
+              data-tabs="timeline"
+              data-width="500"
+              data-height="400"
+              data-small-header="false"
+              data-adapt-container-width="true"
+              data-hide-cover="false"
+              data-show-facepile="true">
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Pricing Table -->
+    <!-- PRICING TABLE -->
     <section id="pricing">
       <div class="container">
         <h2>Pricing (HTML Table)</h2>
-        <p class="sub">Transparent tiers—sticky header & hover rows included.</p>
+        <p class="sub">Clear tiers with a sticky header and accessible markup.</p>
 
         <div class="table-wrap" role="region" aria-label="Pricing table" tabindex="0">
           <table>
@@ -248,10 +296,10 @@
                 <th scope="col">Personalisation</th>
                 <th scope="col">Turnaround</th>
                 <th scope="col">Price</th>
-                <th scope="col">Order</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="price">
               <tr>
                 <th scope="row">Photo Mug</th>
                 <td>1 photo + text</td>
@@ -283,25 +331,25 @@
             </tbody>
           </table>
         </div>
-
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     <div class="container">
       <div class="links" id="github">
-        <!-- Replace these after you push and deploy -->
+        <!-- Replace after you push & deploy -->
         <a href="https://github.com/YOUR-USERNAME/YOUR-REPO" target="_blank" rel="noopener">Public GitHub Repository</a>
         <span>•</span>
         <a href="https://YOUR-SITE.netlify.app" target="_blank" rel="noopener">Live Netlify Site</a>
       </div>
-      <div style="margin-top:8px">© <span id="y"></span> Personalised Gifts Studio • by Camelia Simion</div>
+      <div style="margin-top:8px">© <span id="y"></span> Iris93 Personalised Gifts • by Camelia Simion</div>
     </div>
   </footer>
 
   <script>
+    // current year
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 </body>
