@@ -1,258 +1,477 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Iris93 • Personalised Gift Shop</title>
-  <meta name="description" content="Iris93 Personalised Gifts – custom mugs, tees, wall art and more." />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iris93 • Personalised Gifts</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- CSS Variables + small custom tweaks -->
   <style>
     :root{
-      --bg:#0f0f12;
-      --panel:#16161b;
-      --card:#1d1d24;
-      --text:#f5f7fb;
-      --muted:#b4b7c9;
-      --accent:#7c3aed; /* royal purple */
-      --accent-2:#22d3ee;
-      --ok:#16a34a;
-      --warn:#f59e0b;
-      --danger:#ef4444;
-      --radius:18px;
-      --shadow:0 10px 25px rgba(0,0,0,.35);
+      --brand: #6b46c1;        /* royal purple */
+      --brand-2: #7c3aed;      /* iris purple */
+      --accent: #f59e0b;       /* warm gold */
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol";
-      background:radial-gradient(1200px 700px at 90% -10%, rgba(124,58,237,.18), transparent),
-                 radial-gradient(1000px 600px at -10% 120%, rgba(34,211,238,.14), transparent),
-                 var(--bg);
-      color:var(--text);
+    .brand-gradient{
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
     }
-    a{color:var(--accent-2);text-decoration:none}
-    header{
-      position:sticky;top:0;z-index:20;
-      background:linear-gradient(180deg, rgba(15,15,18,.9), rgba(15,15,18,.65) 70%, transparent);
-      backdrop-filter: blur(8px);
-      border-bottom:1px solid rgba(255,255,255,.06);
+    .tab-btn[aria-selected="true"]{
+      color: white; background: var(--brand);
     }
-    .wrap{max-width:1200px;margin:0 auto;padding:18px}
-    .row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-    #logo{
-      height:48px;width:auto;border-radius:12px;
-      box-shadow:var(--shadow);background:#fff;object-fit:contain;
-    }
-    .brand h1{margin:0;font-size:1.4rem;letter-spacing:.3px}
-    .brand small{color:var(--muted)}
-    nav{
-      margin-top:10px;display:flex;gap:10px;flex-wrap:wrap
-    }
-    .tab-btn{
-      padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg, #1a1a22, #14141a);
-      color:var(--text);cursor:pointer;font-weight:600
-    }
-    .tab-btn.active{border-color:transparent;background:linear-gradient(180deg, var(--accent), #5b1ccf); box-shadow:0 6px 18px rgba(124,58,237,.35)}
-    main{max-width:1200px;margin:20px auto;padding:0 18px 48px}
-    section.panel{
-      background:linear-gradient(180deg, #181821, #14141b);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;margin-top:18px
-    }
-    .grid{
-      display:grid;gap:16px;
-      grid-template-columns:repeat( auto-fit, minmax(240px,1fr) );
-    }
-    .card{
-      background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;
-      overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column
-    }
-    .card img{width:100%;height:190px;object-fit:cover;background:#0b0b0e}
-    .card .body{padding:12px 14px 16px;display:flex;flex-direction:column;gap:8px}
-    .price{font-weight:800}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.86rem}
-    .row-between{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.08);
-      background:#20202a;color:var(--text);font-weight:700;cursor:pointer
-    }
-    .btn.primary{background:linear-gradient(180deg, var(--accent), #5b1ccf);border-color:transparent}
-    .btn.buy{background:linear-gradient(180deg, #16a34a, #0f7a35);border-color:transparent}
-    .btn.warn{background:linear-gradient(180deg, #f59e0b, #c77903);border-color:transparent}
-    .btn.icon{padding:8px 10px;border-radius:10px}
-    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-    input[type="search"], select{
-      background:#0f0f14;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;color:var(--text)
-    }
-    /* cart drawer */
-    .cart{
-      position:fixed;right:16px;bottom:16px;z-index:50;
-      background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:var(--shadow);
-      width:340px;max-height:70vh;display:flex;flex-direction:column;overflow:hidden
-    }
-    .cart header{position:static;background:transparent;border:0}
-    .cart-list{overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
-    .cart-item{display:grid;grid-template-columns:60px 1fr auto;gap:10px;align-items:center;background:#121219;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:8px}
-    .cart-item img{width:60px;height:60px;object-fit:cover;border-radius:10px}
-    .cart-footer{padding:12px;border-top:1px solid rgba(255,255,255,.08);display:grid;gap:10px}
-    .hidden{display:none !important}
-    /* modal */
-    dialog{
-      border:0;border-radius:18px;padding:0;max-width:720px;width:min(92vw,720px);
-      background:var(--panel);color:var(--text);box-shadow:var(--shadow)
-    }
-    dialog::backdrop{background:rgba(0,0,0,.55)}
-    .modal-body{display:grid;grid-template-columns:1.2fr 1fr}
-    .modal-body img{width:100%;height:100%;object-fit:cover;min-height:300px}
-    .modal-content{padding:16px;display:grid;gap:10px}
-    .tag{font-size:.8rem;color:var(--muted)}
-    /* tabs visibility */
-    .tab-panel{display:none}
-    .tab-panel.active{display:block}
-    /* table */
-    table{width:100%;border-collapse:separate;border-spacing:0 10px}
-    th,td{padding:12px 14px;text-align:left}
-    tr{background:#13131a;border:1px solid rgba(255,255,255,.06)}
-    tr:first-child th{color:var(--muted)}
-    tr td:first-child, tr th:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
-    tr td:last-child, tr th:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
-    footer{max-width:1200px;margin:40px auto;padding:0 18px 80px;color:var(--muted)}
+    .tab-btn:hover{ background: rgba(123, 97, 255, .08); }
+    .shadow-soft{ box-shadow: 0 10px 30px rgba(17, 24, 39, .12); }
+    /* Make iframes nicely rounded */
+    .rounded-2xl iframe{ border-radius: 1rem; overflow: hidden; }
   </style>
 </head>
-<body>
-  <header>
-    <div class="wrap">
-      <div class="row">
-        <!-- TODO: replace with your actual logo file path -->
-        <img id="logo" src="assets/logo-iris93.png" alt="Iris93 logo" />
-        <div class="brand">
-          <h1>Iris93 • Personalised Gifts</h1>
-          <small>Custom mugs, tees, wall art • Made in the UK</small>
-        </div>
-        <div style="margin-left:auto" class="row">
-          <button id="openCart" class="btn icon" title="Open cart">🛒 <span id="cartCount" class="pill">0</span></button>
-        </div>
+<body class="min-h-screen bg-gray-50 text-gray-800">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="#" class="flex items-center gap-3">
+        <img src="images/iris93-logo.png" alt="Iris93 Logo" class="h-10 w-10 object-contain rounded-lg border">
+        <span class="text-xl font-semibold tracking-tight">Iris93 • Personalised Gifts</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="#social" class="hidden sm:inline-flex items-center px-3 py-2 rounded-lg border hover:bg-gray-50">
+          <i class="fa-brands fa-facebook mr-2"></i> Follow
+        </a>
+        <button id="cartBtn" class="relative inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white" style="background: var(--brand);">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Cart</span>
+          <span id="cartCount" class="absolute -top-2 -right-2 text-xs bg-rose-600 text-white rounded-full px-1.5 py-0.5">0</span>
+        </button>
       </div>
-      <nav role="tablist" aria-label="Sections">
-        <button class="tab-btn active" data-tab="collections">Collections</button>
-        <button class="tab-btn" data-tab="filters">Filters</button>
-        <button class="tab-btn" data-tab="social">Social</button>
-        <button class="tab-btn" data-tab="pricing">Pricing</button>
-        <button class="tab-btn" data-tab="viewcode">View Code</button>
-      </nav>
-    </div>
+    </nav>
   </header>
 
-  <main>
-    <!-- Collections -->
-    <section id="collections" class="panel tab-panel active">
-      <div class="toolbar">
-        <input id="q" type="search" placeholder="Search gifts (mug, birthday, tee…)" />
-        <select id="cat">
-          <option value="">All categories</option>
-          <option value="mug">Mugs</option>
-          <option value="tee">T-Shirts</option>
-          <option value="wall">Wall Art</option>
-          <option value="kids">Kids</option>
-          <option value="wedding">Wedding</option>
-        </select>
-        <select id="sort">
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low → High</option>
-          <option value="price-desc">Price: High → Low</option>
-        </select>
-      </div>
-
-      <div id="productGrid" class="grid"></div>
-    </section>
-
-    <!-- Filters -->
-    <section id="filters" class="panel tab-panel">
-      <h3 style="margin-top:6px">Refine your search</h3>
-      <div class="row" style="flex-wrap:wrap;gap:14px;margin-top:8px">
-        <label class="pill"><input type="checkbox" class="flag" value="new" /> New</label>
-        <label class="pill"><input type="checkbox" class="flag" value="bestseller" /> Bestseller</label>
-        <label class="pill"><input type="checkbox" class="flag" value="personalised" /> Personalised</label>
-        <label class="pill"><input type="checkbox" class="flag" value="eco" /> Eco</label>
-        <label class="pill"><input type="checkbox" class="flag" value="limited" /> Limited</label>
-      </div>
-      <p class="tag" style="margin-top:10px">Tip: these flags combine with search & category.</p>
-    </section>
-
-    <!-- Social -->
-    <section id="social" class="panel tab-panel">
-      <div class="grid" style="grid-template-columns:1fr 1fr">
-        <div>
-          <h3 style="margin:6px 0 10px">Facebook</h3>
-          <!-- Facebook Page Plugin using your page ID -->
-          <div style="border-radius:12px;overflow:hidden">
-            <iframe
-              title="Iris93 Facebook Page"
-              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D100077254045255&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
-              width="100%" height="600" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true"
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
-            </iframe>
-          </div>
-          <p class="tag" style="margin-top:8px">If it shows a consent screen, click "Allow cookies" to load the feed.</p>
-        </div>
-        <div>
-          <h3 style="margin:6px 0 10px">Studio Music</h3>
-          <!-- A calm, shop-friendly soundtrack (replace if you have a preferred video) -->
-          <div style="position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden">
-            <iframe
-              title="Background music"
-              src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0&mute=0&modestbranding=1&rel=0"
-              style="position:absolute;inset:0;width:100%;height:100%;border:0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-          </div>
-          <p class="tag" style="margin-top:8px">Feel-good background music while you browse 💜</p>
+  <!-- HERO -->
+  <section class="brand-gradient text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16 grid lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">Make it <span class="text-amber-200">personal</span>. Make it <span class="underline decoration-amber-300">memorable</span>.</h1>
+        <p class="mt-4 text-white/90 max-w-2xl">Custom mugs, tees, wall art, birthday sets & more — designed with love by Iris93. Add names, dates, photos, and little details that matter.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#collections" class="inline-flex items-center gap-2 bg-white text-gray-800 px-4 py-2 rounded-xl shadow-soft">
+            <i class="fa-solid fa-gift"></i> Browse Collections
+          </a>
+          <a href="#pricing" class="inline-flex items-center gap-2 border border-white/30 text-white px-4 py-2 rounded-xl hover:bg-white/10">
+            <i class="fa-solid fa-tags"></i> Pricing
+          </a>
         </div>
       </div>
-    </section>
+      <!-- YouTube embed: calm background music -->
+      <div class="rounded-2xl overflow-hidden shadow-soft bg-white/5 p-2">
+        <div class="aspect-video rounded-2xl overflow-hidden">
+          <iframe
+            width="100%" height="100%"
+            src="https://www.youtube.com/embed/jfKfPfyJRdk?rel=0&modestbranding=1"
+            title="Lo-fi beats for Iris93 shop"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <p class="text-white/80 text-sm px-2 py-3">Soft background music to shop by. (You can replace this with any YouTube track you like.)</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- Pricing -->
-    <section id="pricing" class="panel tab-panel">
-      <h3 style="margin:6px 0 10px">Transparent Pricing</h3>
-      <table>
-        <tr><th>Product</th><th>Base</th><th>Personalisation</th><th>Turnaround</th></tr>
-        <tr><td>Custom Ceramic Mug (11oz)</td><td>£7.99</td><td>+ £3.00 (text/image)</td><td>1–2 business days</td></tr>
-        <tr><td>Personalised T-Shirt (Unisex)</td><td>£12.99</td><td>+ £4.00 (front) / + £3.00 (back)</td><td>2–3 business days</td></tr>
-        <tr><td>Framed Wall Print (A4)</td><td>£14.99</td><td>+ £4.00 (custom artwork)</td><td>2–4 business days</td></tr>
-        <tr><td>Kids Birthday Bundle</td><td>£19.99</td><td>Included (name/age)</td><td>2–3 business days</td></tr>
-      </table>
-      <p class="tag">Bulk & event discounts available. UK shipping calculated at checkout.</p>
-    </section>
+  <!-- TABS -->
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10">
+    <div class="flex flex-wrap gap-2" role="tablist" aria-label="Shop tabs">
+      <button class="tab-btn px-4 py-2 rounded-xl border" role="tab" aria-selected="true" data-tab="collections" id="collections">Collections</button>
+      <button class="tab-btn px-4 py-2 rounded-xl border" role="tab" aria-selected="false" data-tab="filters">Filters</button>
+      <button class="tab-btn px-4 py-2 rounded-xl border" role="tab" aria-selected="false" data-tab="social" id="social">Social</button>
+      <button class="tab-btn px-4 py-2 rounded-xl border" role="tab" aria-selected="false" data-tab="pricing" id="pricing">Pricing</button>
+      <button class="tab-btn px-4 py-2 rounded-xl border" role="tab" aria-selected="false" data-tab="code">View&nbsp;Code</button>
+    </div>
 
-    <!-- View Code -->
-    <section id="viewcode" class="panel tab-panel">
-      <h3 style="margin:6px 0 10px">Project Notes</h3>
-      <ul>
-        <li>Pure HTML/CSS/JS single file for easy upload to Netlify.</li>
-        <li>Cart persists via <code>localStorage</code>.</li>
-        <li>Replace product <em>image</em> URLs with your Facebook post image links (see comments in code).</li>
-        <li>Replace WhatsApp number in <code>WHATSAPP_NUMBER</code> with your business number.</li>
-      </ul>
-      <details style="margin-top:10px">
-        <summary>Show basic structure</summary>
-        <pre><code>&lt;header /&gt; • tabs • sections • product grid • cart drawer • modal</code></pre>
-      </details>
-    </section>
-  </main>
+    <!-- PANELS -->
+    <div class="mt-6 space-y-8">
 
-  <!-- Product Modal -->
-  <dialog id="productModal">
-    <div class="modal-body">
-      <img id="modalImg" alt="" />
-      <div class="modal-content">
-        <div class="tag" id="modalCat"></div>
-        <h2 id="modalTitle" style="margin:4px 0 4px"></h2>
-        <p id="modalDesc" style="color:var(--muted)"></p>
-        <div class="row-between">
-          <span class="price" id="modalPrice"></span>
-          <div class="row">
-            <button id="modalAdd" class="btn primary">Add to Cart</button>
+      <!-- COLLECTIONS -->
+      <div class="tab-panel" data-panel="collections">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Product Card Template (duplicate as needed; images can be replaced with real FB post images) -->
+          <div class="bg-white rounded-2xl shadow-soft overflow-hidden border" data-product='{"id":"mug01","title":"Personalised Name Mug","price":12.99,"img":"https://images.unsplash.com/photo-1517701604594-6d0f0d6c3b18?q=80&w=1200&auto=format&fit=crop","desc":"Add any name & color. 11oz ceramic, dishwasher safe."}'>
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1517701604594-6d0f0d6c3b18?q=80&w=1200&auto=format&fit=crop" alt="Personalised Name Mug">
+            <div class="p-4">
+              <h3 class="font-semibold text-lg">Personalised Name Mug</h3>
+              <p class="text-sm text-gray-600 mt-1">Add any name & colour.</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-xl font-bold">£12.99</span>
+                <div class="flex gap-2">
+                  <button class="view-btn inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border hover:bg-gray-50"><i class="fa-regular fa-eye"></i> View</button>
+                  <button class="add-btn inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-white" style="background: var(--accent);"><i class="fa-solid fa-cart-plus"></i> Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-soft overflow-hidden border" data-product='{"id":"tee01","title":"Custom Photo T-Shirt","price":19.99,"img":"https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop","desc":"Upload your photo, choose size & colour. Premium cotton."}'>
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=1200&auto=format&fit=crop" alt="Custom Photo T-Shirt">
+            <div class="p-4">
+              <h3 class="font-semibold text-lg">Custom Photo T-Shirt</h3>
+              <p class="text-sm text-gray-600 mt-1">Upload your picture.</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-xl font-bold">£19.99</span>
+                <div class="flex gap-2">
+                  <button class="view-btn px-3 py-1.5 rounded-lg border hover:bg-gray-50"><i class="fa-regular fa-eye"></i> View</button>
+                  <button class="add-btn px-3 py-1.5 rounded-lg text-white" style="background: var(--accent);"><i class="fa-solid fa-cart-plus"></i> Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-soft overflow-hidden border" data-product='{"id":"art01","title":"Birthday Wall Art","price":14.50,"img":"https://images.unsplash.com/photo-1589308078059-be1415eab4c3?q=80&w=1200&auto=format&fit=crop","desc":"A4/A3 print. Add name, age, date & a short message."}'>
+            <img class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?q=80&w=1200&auto=format&fit=crop" alt="Birthday Wall Art">
+            <div class="p-4">
+              <h3 class="font-semibold text-lg">Birthday Wall Art</h3>
+              <p class="text-sm text-gray-600 mt-1">Add name, age & date.</p>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="text-xl font-bold">£14.50</span>
+                <div class="flex gap-2">
+                  <button class="view-btn px-3 py-1.5 rounded-lg border hover:bg-gray-50"><i class="fa-regular fa-eye"></i> View</button>
+                  <button class="add-btn px-3 py-1.5 rounded-lg text-white" style="background: var(--accent);"><i class="fa-solid fa-cart-plus"></i> Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add more products as needed -->
+        </div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="tab-panel hidden" data-panel="filters">
+        <div class="bg-white rounded-2xl p-6 shadow-soft border">
+          <h3 class="text-xl font-semibold">Filter products</h3>
+          <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <label class="block">
+              <span class="text-sm">Category</span>
+              <select id="categoryFilter" class="mt-1 w-full rounded-lg border px-3 py-2">
+                <option value="">All</option>
+                <option value="mugs">Mugs</option>
+                <option value="tshirts">T-Shirts</option>
+                <option value="art">Wall Art</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-sm">Max Price (£)</span>
+              <input id="priceFilter" type="number" step="0.01" class="mt-1 w-full rounded-lg border px-3 py-2" placeholder="e.g. 15" />
+            </label>
+            <div class="flex items-end gap-3">
+              <button id="applyFilters" class="px-4 py-2 rounded-xl text-white" style="background: var(--brand);">Apply</button>
+              <button id="clearFilters" class="px-4 py-2 rounded-xl border">Clear</button>
+            </div>
+          </div>
+          <p class="mt-3 text-sm text-gray-600">Tip: connect real categories/prices to each product’s <code>data-product</code> JSON.</p>
+        </div>
+      </div>
+
+      <!-- SOCIAL (FACEBOOK EMBED) -->
+      <div class="tab-panel hidden" data-panel="social">
+        <div class="grid lg:grid-cols-2 gap-6 items-start">
+          <div class="bg-white rounded-2xl p-4 shadow-soft border">
+            <h3 class="text-xl font-semibold mb-2">Facebook</h3>
+            <p class="text-sm text-gray-600 mb-3">Your page feed is embedded below. This uses Facebook’s official Page Plugin.</p>
+            <!-- Facebook Page Plugin -->
+            <div class="rounded-2xl overflow-hidden">
+              <iframe
+                title="Facebook Page"
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D100077254045255&tabs=timeline&width=500&height=650&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
+                width="100%" height="650" style="border:none;overflow:hidden"
+                scrolling="no" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            </div>
+            <p class="mt-2 text-xs text-gray-500">If nothing appears, make sure the page is public and not restricted by age/location.</p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-4 shadow-soft border">
+            <h3 class="text-xl font-semibold mb-2">Contact & Links</h3>
+            <ul class="space-y-2 text-gray-700">
+              <li><i class="fa-brands fa-facebook mr-2 text-[#1877f2]"></i><a class="underline" href="https://www.facebook.com/profile.php?id=100077254045255" target="_blank" rel="noopener">Iris93 on Facebook</a></li>
+              <li><i class="fa-solid fa-envelope mr-2"></i><a class="underline" href="mailto:orders@iris93.co.uk">orders@iris93.co.uk</a></li>
+              <li><i class="fa-brands fa-whatsapp mr-2 text-green-600"></i><a class="underline" href="https://wa.me/447000000000?text=Hi%20Iris93!%20I%27d%20love%20to%20order%20a%20personalised%20gift." target="_blank" rel="noopener">WhatsApp us</a></li>
+            </ul>
+            <div class="mt-4 p-3 border rounded-xl bg-gray-50 text-sm">
+              Want to showcase individual Facebook posts? Use the “Embedded Post” plugin and swap in your post URL.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRICING -->
+      <div class="tab-panel hidden" data-panel="pricing">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl p-6 border shadow-soft">
+            <h4 class="text-lg font-semibold">Mugs</h4>
+            <p class="text-sm text-gray-600 mt-1">Single-side print, dishwasher safe.</p>
+            <div class="mt-4 text-3xl font-extrabold">£12.99</div>
+            <button class="mt-4 w-full px-4 py-2 rounded-xl text-white" style="background: var(--brand);">Add to Cart</button>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border shadow-soft">
+            <h4 class="text-lg font-semibold">T-Shirts</h4>
+            <p class="text-sm text-gray-600 mt-1">Photo/text print, premium cotton.</p>
+            <div class="mt-4 text-3xl font-extrabold">£19.99</div>
+            <button class="mt-4 w-full px-4 py-2 rounded-xl text-white" style="background: var(--brand);">Add to Cart</button>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border shadow-soft">
+            <h4 class="text-lg font-semibold">Wall Art</h4>
+            <p class="text-sm text-gray-600 mt-1">A4/A3 personalised design.</p>
+            <div class="mt-4 text-3xl font-extrabold">£14.50</div>
+            <button class="mt-4 w-full px-4 py-2 rounded-xl text-white" style="background: var(--brand);">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CODE VIEW -->
+      <div class="tab-panel hidden" data-panel="code">
+        <div class="bg-white rounded-2xl p-6 border shadow-soft">
+          <h3 class="text-xl font-semibold">How this page works</h3>
+          <ul class="mt-3 list-disc pl-6 text-sm text-gray-700 space-y-1">
+            <li>Styled with Tailwind; brand colors set using CSS variables.</li>
+            <li>Product cards carry a JSON payload in <code>data-product</code>.</li>
+            <li>“View” opens a modal with image/description/price.</li>
+            <li>“Add” updates the cart sidebar; “Buy Now” opens a quick checkout message.</li>
+            <li>Facebook Page embedded with the official Page Plugin iframe.</li>
+          </ul>
+          <p class="mt-4 text-sm text-gray-600">You can export this to Netlify and link your GitHub at the footer.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRODUCT MODAL -->
+  <div id="productModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4">
+    <div class="bg-white max-w-2xl w-full rounded-2xl overflow-hidden shadow-soft">
+      <div class="flex items-center justify-between px-5 py-4 border-b">
+        <h3 id="modalTitle" class="text-xl font-semibold"></h3>
+        <button id="modalClose" class="text-gray-500 hover:text-gray-700"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+      <div class="grid md:grid-cols-2 gap-0">
+        <img id="modalImg" class="w-full h-72 object-cover md:h-full" alt="">
+        <div class="p-5">
+          <p id="modalDesc" class="text-gray-700"></p>
+          <div class="mt-4 text-2xl font-bold" id="modalPrice"></div>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <button id="modalAdd" class="px-4 py-2 rounded-xl text-white" style="background: var(--accent);"><i class="fa-solid fa-cart-plus mr-2"></i>Add to Cart</button>
+            <a id="modalBuy" href="#" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl border inline-flex items-center gap-2">
+              <i class="fa-solid fa-bolt"></i> Buy Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART SIDEBAR -->
+  <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-[90%] sm:w-[420px] bg-white shadow-2xl translate-x-full transition-transform duration-300 z-50">
+    <div class="h-full flex flex-col">
+      <div class="p-4 border-b flex items-center justify-between">
+        <h3 class="text-lg font-semibold"><i class="fa-solid fa-basket-shopping mr-2"></i>Your Cart</h3>
+        <button id="cartClose" class="text-gray-500 hover:text-gray-700"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+      <div id="cartItems" class="flex-1 overflow-auto p-4 space-y-3"></div>
+      <div class="p-4 border-t">
+        <div class="flex items-center justify-between font-semibold">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">£0.00</span>
+        </div>
+        <button id="checkoutBtn" class="mt-4 w-full px-4 py-2 rounded-xl text-white" style="background: var(--brand);">Checkout</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- FOOTER -->
+  <footer class="mt-14 border-t">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+      <p>© <span id="year"></span> Iris93 • Personalised Gifts</p>
+      <p>This project was coded by Camelia Simion — <a class="underline" href="#" target="_blank" rel="noopener">GitHub repo</a></p>
+    </div>
+  </footer>
+
+  <!-- APP SCRIPT -->
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Tabs
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        tabButtons.forEach(b => b.setAttribute('aria-selected', String(b === btn)));
+        tabPanels.forEach(p => p.classList.toggle('hidden', p.dataset.panel !== target));
+        if (target === 'social') location.hash = 'social';
+        if (target === 'pricing') location.hash = 'pricing';
+        if (target === 'collections') location.hash = 'collections';
+      });
+    });
+
+    // Products: view + add
+    const modal = document.getElementById('productModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImg = document.getElementById('modalImg');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalAdd = document.getElementById('modalAdd');
+    const modalBuy = document.getElementById('modalBuy');
+
+    let currentProduct = null;
+
+    function openModal(product){
+      currentProduct = product;
+      modalTitle.textContent = product.title;
+      modalImg.src = product.img;
+      modalImg.alt = product.title;
+      modalDesc.textContent = product.desc;
+      modalPrice.textContent = `£${product.price.toFixed(2)}`;
+      modalBuy.href = `https://wa.me/447000000000?text=${encodeURIComponent(
+        `Hi Iris93! I'd like to buy: ${product.title} (£${product.price.toFixed(2)}).`
+      )}`;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+    function closeModal(){
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      currentProduct = null;
+    }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+
+    document.querySelectorAll('.view-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const card = btn.closest('[data-product]');
+        const product = JSON.parse(card.dataset.product);
+        openModal(product);
+      });
+    });
+    document.querySelectorAll('.add-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const card = btn.closest('[data-product]');
+        const product = JSON.parse(card.dataset.product);
+        addToCart(product);
+      });
+    });
+    modalAdd.addEventListener('click', ()=>{ if(currentProduct) addToCart(currentProduct); });
+
+    // Simple Filters (demo)
+    document.getElementById('applyFilters').addEventListener('click', ()=>{
+      const max = parseFloat(document.getElementById('priceFilter').value || '0');
+      const cat = document.getElementById('categoryFilter').value;
+      document.querySelectorAll('[data-product]').forEach(card=>{
+        const product = JSON.parse(card.dataset.product);
+        // Attach your own categories/prices here. This is demo logic.
+        let ok = true;
+        if(!isNaN(max) && max>0) ok = ok && product.price <= max;
+        if(cat){
+          // naive demo categorisation
+          if(cat === 'mugs' && !/mug/i.test(product.title)) ok = false;
+          if(cat === 'tshirts' && !/shirt|t-shirt|tshirt/i.test(product.title)) ok = false;
+          if(cat === 'art' && !/art|print/i.test(product.title)) ok = false;
+        }
+        card.classList.toggle('hidden', !ok);
+      });
+    });
+    document.getElementById('clearFilters').addEventListener('click', ()=>{
+      document.getElementById('categoryFilter').value = '';
+      document.getElementById('priceFilter').value = '';
+      document.querySelectorAll('[data-product]').forEach(card=>card.classList.remove('hidden'));
+    });
+
+    // CART
+    const cartBtn = document.getElementById('cartBtn');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartClose = document.getElementById('cartClose');
+    const cartItems = document.getElementById('cartItems');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const cartCount = document.getElementById('cartCount');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    let cart = [];
+
+    function openCart(){ cartDrawer.style.transform = 'translateX(0)'; }
+    function closeCart(){ cartDrawer.style.transform = 'translateX(100%)'; }
+
+    cartBtn.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+
+    function addToCart(p){
+      const existing = cart.find(i => i.id === p.id);
+      if(existing){ existing.qty += 1; } else { cart.push({...p, qty:1}); }
+      renderCart();
+      // small feedback
+      cartBtn.classList.add('ring-2','ring-amber-400');
+      setTimeout(()=>cartBtn.classList.remove('ring-2','ring-amber-400'), 400);
+    }
+
+    function removeFromCart(id){
+      cart = cart.filter(i => i.id !== id);
+      renderCart();
+    }
+
+    function changeQty(id, delta){
+      const item = cart.find(i => i.id === id);
+      if(!item) return;
+      item.qty += delta;
+      if(item.qty <= 0) removeFromCart(id);
+      renderCart();
+    }
+
+    function renderCart(){
+      cartItems.innerHTML = '';
+      let subtotal = 0;
+      cart.forEach(item=>{
+        subtotal += item.price * item.qty;
+        const row = document.createElement('div');
+        row.className = 'flex gap-3 items-center border rounded-xl p-2';
+        row.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" class="w-16 h-16 object-cover rounded-lg">
+          <div class="flex-1">
+            <div class="font-semibold">${item.title}</div>
+            <div class="text-sm text-gray-600">£${item.price.toFixed(2)} × ${item.qty}</div>
+            <div class="mt-1 flex items-center gap-2">
+              <button class="px-2 py-1 border rounded-lg qty-dec">−</button>
+              <button class="px-2 py-1 border rounded-lg qty-inc">+</button>
+              <button class="px-2 py-1 border rounded-lg text-rose-600 remove">Remove</button>
+            </div>
+          </div>
+        `;
+        row.querySelector('.qty-dec').addEventListener('click', ()=>changeQty(item.id, -1));
+        row.querySelector('.qty-inc').addEventListener('click', ()=>changeQty(item.id, +1));
+        row.querySelector('.remove').addEventListener('click', ()=>removeFromCart(item.id));
+        cartItems.appendChild(row);
+      });
+      cartSubtotal.textContent = `£${subtotal.toFixed(2)}`;
+      const totalQty = cart.reduce((a,b)=>a+b.qty,0);
+      cartCount.textContent = totalQty;
+    }
+
+    checkoutBtn.addEventListener('click', ()=>{
+      if(cart.length === 0){ alert('Your cart is empty.'); return; }
+      const summary = cart.map(i=>`${i.title} x${i.qty} (£${(i.price*i.qty).toFixed(2)})`).join('%0A');
+      const total = cart.reduce((a,b)=>a+b.price*b.qty,0);
+      const msg = `Hi Iris93!%0A%0AI'd like to order:%0A${summary}%0A%0ATotal: £${total.toFixed(2)}.%0AName:%0ADelivery address:%0ANotes:`;
+      window.open(`https://wa.me/447000000000?text=${msg}`, '_blank', 'noopener');
+    });
+
+    // Deep-link to a tab via hash
+    const hash = location.hash.replace('#','');
+    if(hash){
+      const targetBtn = Array.from(tabButtons).find(b => b.dataset.tab === hash);
+      if(targetBtn) targetBtn.click();
+    }
+  </script>
+</body>
+</html>
